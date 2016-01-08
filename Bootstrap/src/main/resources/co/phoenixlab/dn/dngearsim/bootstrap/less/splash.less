@@ -1,0 +1,41 @@
+// splash.less
+// Stylesheet for Bootstrap splash screen
+
+//  Colors
+@color-foreground-blue: #7BAFDC;
+
+//  Sizes
+@size-window-width: 300px;
+@size-window-height: 98px;
+@size-loading-bar-height: 4px;
+
+.bootstrap {
+  -fx-background-image: url("../img/splash.png");
+  -fx-background-position: center;
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: cover;
+  -fx-min-width: @size-window-width;
+  -fx-max-width: @size-window-width;
+  -fx-min-height: @size-window-height;
+  -fx-max-height: @size-window-height;
+
+  .status-text {
+    -fx-text-fill: @color-foreground-blue;
+    -fx-font: normal normal 12px 'Segoe UI';
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+  }
+
+  .loading-bar {
+    -fx-arc-width: 0;
+    -fx-arc-height: 0;
+    -fx-stroke-width: 0;
+    -fx-fill: @color-foreground-blue;
+    -fx-min-height: @size-loading-bar-height;
+    -fx-max-height: @size-loading-bar-height;
+    -fx-min-width: 2px;
+    -fx-max-width: @size-window-width;
+  }
+}
+
+
