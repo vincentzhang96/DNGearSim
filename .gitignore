@@ -1,3 +1,6 @@
+# Compiled CSS files
+css/
+
 # IntelliJ IDEA Project Files
 .idea/
 *.iml
