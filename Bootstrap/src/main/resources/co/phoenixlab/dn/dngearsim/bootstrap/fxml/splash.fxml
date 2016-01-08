@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="bootstrap" stylesheets="@../css/splash.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="bootstrap" stylesheets="@../css/splash.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.phoenixlab.dn.dngearsim.bootstrap.BootstrapUi">
    <children>
       <Rectangle fx:id="loadingBar" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="4.0" layoutX="-86.0" layoutY="-16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="loading-bar" width="1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
       <Label fx:id="statusText" layoutX="137.0" layoutY="68.0" maxWidth="1.7976931348623157E308" styleClass="status-text" textAlignment="CENTER" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
