@@ -3,6 +3,7 @@ package co.phoenixlab.dn.dngearsim.bootstrap;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -72,6 +73,7 @@ public class Bootstrap extends Application {
         exitBtn.setOnAction(ae -> stopApp());
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(errorLbl, detailLbl, exitBtn);
+        root.setPadding(new Insets(10));
         return root;
     }
 
