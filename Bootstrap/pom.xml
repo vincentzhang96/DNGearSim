@@ -12,6 +12,10 @@
     <artifactId>Bootstrap</artifactId>
     <version>1.0</version>
 
+    <properties>
+        <dn.dngearsim.bootstrap.assets>${project.basedir}/src/main/resources/co/phoenixlab/dn/dngearsim/${artifactId}/</dn.dngearsim.bootstrap.assets>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -24,6 +28,19 @@
                             <mainClass>co.phoenixlab.dn.dngearsim.bootstrap.Bootstrap</mainClass>
                         </manifest>
                     </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.lesscss</groupId>
+                <artifactId>lesscss-maven-plugin</artifactId>
+                <version>1.7.0.1.1</version>
+                <configuration>
+                    <sourceDirectory>
+                        ${dn.dngearsim.bootstrap.assets}/less
+                    </sourceDirectory>
+                    <outputDirectory>
+                        ${dn.dngearsim.bootstrap.assets}/css
+                    </outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
