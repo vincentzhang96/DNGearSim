@@ -8,6 +8,9 @@ css/
 # Maven
 target/
 
+# Runtime
+/runtime/
+
 # Java
 # Compiled
 *.class
