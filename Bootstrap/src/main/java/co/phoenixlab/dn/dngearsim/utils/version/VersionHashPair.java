@@ -72,7 +72,7 @@ public class VersionHashPair {
         return pair;
     }
 
-    public void fromString(String s) {
+    public void fromString(String s) throws NumberFormatException {
         if (s == null || s.isEmpty()) {
             throw new NumberFormatException("empty string");
         }
@@ -84,7 +84,7 @@ public class VersionHashPair {
         setHash(hashStringToByteArray(split[1]));
     }
 
-    private static String hashToString(byte[] hash) {
+    private static String hashToString(byte[] hash) throws NumberFormatException {
         assert hash.length % 4 == 0 : "Hash size must be multiple of 4";
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < hash.length; i += 4) {
@@ -96,8 +96,24 @@ public class VersionHashPair {
         return builder.toString();
     }
 
-    private static byte[] hashStringToByteArray(String hashStr) {
-        //  TODO
-        return new byte[0];
+    private static byte[] hashStringToByteArray(String hashStr) throws NumberFormatException {
+        byte[] ret = new byte[32];
+        char[] chars = hashStr.toCharArray();
+        for (int i = 0; i < 32; i++) {
+            ret[i] = (byte) (hexDigit(chars[i * 2]) << 4);
+            ret[i] |= hexDigit(chars[i * 2 + 1]);
+        }
+        return ret;
+    }
+
+    private static int hexDigit(char c) throws NumberFormatException {
+        if (c >= '0' && c <= '9') {
+            return c - '0';
+        }
+        if (c >= 'A' && c <= 'F') {
+            //  equiv to c - 'A' + 10, since 'A' is ASCII #65 and '7' is #55
+            return c - '7';
+        }
+        throw new NumberFormatException("Unknown hex digit character '" + c + "'");
     }
 }
