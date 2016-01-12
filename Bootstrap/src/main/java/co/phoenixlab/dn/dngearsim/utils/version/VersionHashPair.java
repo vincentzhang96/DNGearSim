@@ -99,6 +99,9 @@ public class VersionHashPair {
     private static byte[] hashStringToByteArray(String hashStr) throws NumberFormatException {
         byte[] ret = new byte[32];
         char[] chars = hashStr.toCharArray();
+        if (chars.length != 64) {
+            throw new NumberFormatException(hashStr);
+        }
         for (int i = 0; i < 32; i++) {
             ret[i] = (byte) (hexDigit(chars[i * 2]) << 4);
             ret[i] |= hexDigit(chars[i * 2 + 1]);
