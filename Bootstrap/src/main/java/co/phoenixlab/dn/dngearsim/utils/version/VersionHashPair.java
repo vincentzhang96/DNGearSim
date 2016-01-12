@@ -61,4 +61,43 @@ public class VersionHashPair {
         return Integer.compareUnsigned(version, other.version) > 0;
     }
 
+    @Override
+    public String toString() {
+        return Versions.toString(version) + "," + hashToString(hash);
+    }
+
+    public static VersionHashPair parse(String s) throws NumberFormatException {
+        VersionHashPair pair = new VersionHashPair();
+        pair.fromString(s);
+        return pair;
+    }
+
+    public void fromString(String s) {
+        if (s == null || s.isEmpty()) {
+            throw new NumberFormatException("empty string");
+        }
+        String[] split = s.split(",");
+        if (split.length != 2) {
+            throw new NumberFormatException(s);
+        }
+        setVersion(Versions.parseVersion(split[0]));
+        setHash(hashStringToByteArray(split[1]));
+    }
+
+    private static String hashToString(byte[] hash) {
+        assert hash.length % 4 == 0 : "Hash size must be multiple of 4";
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < hash.length; i += 4) {
+            builder.append(String.format("%02X", hash[i]));
+            builder.append(String.format("%02X", hash[i + 1]));
+            builder.append(String.format("%02X", hash[i + 2]));
+            builder.append(String.format("%02X", hash[i + 3]));
+        }
+        return builder.toString();
+    }
+
+    private static byte[] hashStringToByteArray(String hashStr) {
+        //  TODO
+        return new byte[0];
+    }
 }
