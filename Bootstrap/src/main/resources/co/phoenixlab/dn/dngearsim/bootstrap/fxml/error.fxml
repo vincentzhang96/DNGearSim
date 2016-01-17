@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" styleClass="error" stylesheets="@../css/error.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="137.0" layoutY="75.0" styleClass="title-text" text="Oops! There was an issue launching" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0" />
+      <Label fx:id="detailText" layoutX="137.0" layoutY="100.0" styleClass="detail-text" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+      <HBox alignment="CENTER" layoutX="50.0" layoutY="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Button fx:id="retryDialogBtn" defaultButton="true" mnemonicParsing="false" onAction="#onRetryBtnPressed" text="Retry" />
+            <Button fx:id="exitDialogBtn" cancelButton="true" mnemonicParsing="false" onAction="#onExitBtnPressed" text="Exit" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+      </HBox>
+      <Button fx:id="exitBtn" layoutX="262.0" layoutY="2.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#onExitBtnPressed" prefHeight="20.0" prefWidth="20.0" styleClass="exit-btn" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   </children>
+</AnchorPane>

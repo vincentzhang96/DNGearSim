@@ -1,0 +1,89 @@
+// error.less
+// Stylesheet for Bootstrap error modal window
+
+//  Font
+@font-content: normal normal 12px 'Segoe UI';
+
+//  Colors
+@color-window-background: #151515;
+@color-background-gray: #1A1A1A;
+@color-background-gray-hover: lighten(@color-background-gray, 8%);
+@color-background-gray-focus: lighten(@color-background-gray, 2%);
+@color-foreground-white: #B2B2B2;
+@color-foreground-blue: #7BAFDC;
+@color-foreground-blue-focus: desaturate(@color-foreground-blue, 20%);
+@color-foreground-blue-hover: saturate(@color-foreground-blue, 20%);
+
+//  Sizes
+@size-window-width: 300px;
+@size-window-height: 200px;
+
+.error {
+  -fx-background-color: @color-window-background;
+  -fx-background-image: url("../img/splash.png");
+  -fx-background-position: top-left;
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: auto;
+  -fx-min-width: @size-window-width;
+  -fx-max-width: @size-window-width;
+  -fx-min-height: @size-window-height;
+  -fx-max-height: @size-window-height;
+
+  .title-text {
+    -fx-text-fill: @color-foreground-blue;
+    -fx-font: normal normal 16px 'Segoe UI';
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+  }
+
+  .detail-text {
+    -fx-text-fill: @color-foreground-white;
+    -fx-font: @font-content;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+  }
+
+  .button {
+    -fx-cursor: hand;
+    -fx-background-color: @color-background-gray;
+    -fx-background-radius: 0;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-radius: 0;
+    -fx-border-color: transparent;
+    -fx-text-fill: @color-foreground-white;
+    -fx-font: @font-content;
+    -fx-min-height: 30px;
+    -fx-min-width: 60px;
+
+    &:hover,
+    &:hover:focused {
+      -fx-background-color: @color-background-gray-hover;
+      -fx-text-fill: @color-foreground-blue-hover;
+    }
+
+    &:focused {
+      -fx-background-color: @color-background-gray-focus;
+      -fx-border-color: @color-foreground-blue;
+    }
+  }
+
+  .exit-btn {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+    -fx-border-radius: 0;
+    -fx-text-fill: @color-foreground-white;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+    -fx-min-height: 20px;
+    -fx-min-width: 20px;
+    -fx-focus-traversable: false;
+
+    &:hover {
+      -fx-text-fill: @color-foreground-blue;
+      -fx-background-color: transparent;
+    }
+  }
+
+}
