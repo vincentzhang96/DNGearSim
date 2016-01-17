@@ -1,5 +1,6 @@
 package co.phoenixlab.dn.dngearsim.bootstrap;
 
+import co.phoenixlab.dn.dngearsim.utils.version.VersionHashPair;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
@@ -10,13 +11,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static java.nio.file.StandardOpenOption.READ;
 
 public class BootstrapTask extends Task<Method> {
 
+    /**
+     * Size of the buffer to use to read in the file for digesting
+     */
     private static final int DIGEST_BUFFER_SIZE = 8192;
+
+    private static final VersionHashPair NOT_FOUND = new VersionHashPair();
 
     /**
      * Listener to call on successful load
@@ -43,9 +51,19 @@ public class BootstrapTask extends Task<Method> {
      */
     private final ByteBuffer digestBuffer;
 
-    public BootstrapTask(Consumer<Method> onBootstrapOk, Runnable onBootstrapSelfUpdateRequired) {
+    /**
+     * A custom error message to display on exceptions
+     */
+    private Optional<String> errorMessage;
+
+    private final Consumer<String> onFailed;
+
+    public BootstrapTask(Consumer<Method> onBootstrapOk, Runnable onBootstrapSelfUpdateRequired,
+                         Consumer<String> onFailed) {
         this.onBootstrapOk = onBootstrapOk;
         this.onBootstrapSelfUpdateRequired = onBootstrapSelfUpdateRequired;
+        this.onFailed = onFailed;
+        this.errorMessage = Optional.empty();
         this.selfUpdateRequred = false;
         updateTitle("BootstrapTask");
 
@@ -60,8 +78,48 @@ public class BootstrapTask extends Task<Method> {
 
     @Override
     protected Method call() throws Exception {
+        checkAndPerformLauncherUpdate();
+
+
         //  TODO
         return null;
+    }
+
+    private void checkAndPerformLauncherUpdate() throws Exception {
+        updateMessage("Checking updater version");
+        VersionHashPair local = getLocalUpdaterVersion();
+        VersionHashPair remote = getRemoteUpdaterVersion();
+        //  Check if we got a remote version, if not then we obviously cant update
+        //  If we don't have an existing updater or the existing updater was corrupted or is an older version, then
+        //  perform an update
+        //  And if we can't do either, we're screwed
+        if (remote == NOT_FOUND && local == NOT_FOUND) {
+            errorMessage = Optional.of("Unable to download updater and no updater was found.\n" +
+                    "Please check your internet connection and retry");
+            throw new Exception();
+        }
+        if (remote.isVersionHigherThan(local)  || (remote.areVersionsEqual(local) && !remote.areHashesEqual(local))) {
+            performUpdate(remote);
+        } else {
+            updateMessage("Updater check OK");
+            TimeUnit.SECONDS.sleep(1);
+        }
+    }
+
+    private VersionHashPair getLocalUpdaterVersion() {
+
+        //  TODO
+        return NOT_FOUND;
+    }
+
+    private VersionHashPair getRemoteUpdaterVersion() {
+
+        //  TODO
+        return NOT_FOUND;
+    }
+
+    private void performUpdate(VersionHashPair remote) {
+
     }
 
     @Override
@@ -75,7 +133,17 @@ public class BootstrapTask extends Task<Method> {
 
     @Override
     protected void failed() {
+        onFailed.accept(errorMessage.orElseGet(this::getExceptionErrorMessage));
+    }
 
+    @SuppressWarnings("ThrowableResultOfMethodCallIgnored")
+    private String getExceptionErrorMessage() {
+        Throwable throwable = getException();
+        if (throwable != null) {
+            return "Unexpected error: " + throwable.getClass().getSimpleName();
+        } else {
+            return "Unknown error";
+        }
     }
 
     @Override
@@ -94,4 +162,5 @@ public class BootstrapTask extends Task<Method> {
         }
         return sha256Digest.digest();
     }
+
 }

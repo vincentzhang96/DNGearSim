@@ -49,7 +49,8 @@ public class Bootstrap extends Application {
         //  If no error, continue
         if (bootstrapUi != null) {
             bootstrapUi.setOnExitButtonAction(this::stopApp);
-            bootstrapTask =  new BootstrapTask(this::onBootstrapOk, this::onBootstrapSelfUpdateRequired);
+            bootstrapTask =  new BootstrapTask(this::onBootstrapOk, this::onBootstrapSelfUpdateRequired,
+                    this::onBootstrapFailed);
             bootstrapUi.bindToTask(bootstrapTask);
             Thread thread = new Thread(bootstrapTask, "BootstrapTask");
             thread.setDaemon(true);
@@ -79,10 +80,14 @@ public class Bootstrap extends Application {
     }
 
     private void onBootstrapOk(Method transferMethod) {
-        //  TOOD
+        //  TODO
     }
 
     private void onBootstrapSelfUpdateRequired() {
+        //  TODO
+    }
+
+    private void onBootstrapFailed(String error) {
         //  TODO
     }
 
