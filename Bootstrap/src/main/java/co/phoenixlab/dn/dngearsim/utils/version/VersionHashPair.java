@@ -48,8 +48,8 @@ public class VersionHashPair {
             return false;
         }
         VersionHashPair that = (VersionHashPair) o;
-        return version == that.version &&
-                MessageDigest.isEqual(hash, that.hash);
+        return areVersionsEqual(that) &&
+                areHashesEqual(that);
     }
 
     @Override
@@ -59,6 +59,14 @@ public class VersionHashPair {
 
     public boolean isVersionHigherThan(VersionHashPair other) {
         return Integer.compareUnsigned(version, other.version) > 0;
+    }
+
+    public boolean areHashesEqual(VersionHashPair other) {
+        return MessageDigest.isEqual(hash, other.hash);
+    }
+
+    public boolean areVersionsEqual(VersionHashPair other) {
+        return version == other.version;
     }
 
     @Override
