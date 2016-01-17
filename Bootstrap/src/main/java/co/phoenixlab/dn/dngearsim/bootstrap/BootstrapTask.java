@@ -87,6 +87,7 @@ public class BootstrapTask extends Task<Method> {
 
     private void checkAndPerformLauncherUpdate() throws Exception {
         updateMessage("Checking updater version");
+        TimeUnit.MILLISECONDS.sleep(500);
         VersionHashPair local = getLocalUpdaterVersion();
         VersionHashPair remote = getRemoteUpdaterVersion();
         //  Check if we got a remote version, if not then we obviously cant update
@@ -94,15 +95,15 @@ public class BootstrapTask extends Task<Method> {
         //  perform an update
         //  And if we can't do either, we're screwed
         if (remote == NOT_FOUND && local == NOT_FOUND) {
-            errorMessage = Optional.of("Unable to download updater and no updater was found.\n" +
-                    "Please check your internet connection and retry");
+            errorMessage = Optional.of("Launcher is missing and could not be downloaded\n" +
+                    "Please check your connection and try again");
             throw new Exception();
         }
         if (remote.isVersionHigherThan(local)  || (remote.areVersionsEqual(local) && !remote.areHashesEqual(local))) {
             performUpdate(remote);
         } else {
             updateMessage("Updater check OK");
-            TimeUnit.SECONDS.sleep(1);
+            TimeUnit.MILLISECONDS.sleep(500);
         }
     }
 
