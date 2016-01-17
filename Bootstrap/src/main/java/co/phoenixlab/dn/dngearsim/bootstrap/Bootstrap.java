@@ -21,7 +21,7 @@ public class Bootstrap extends Application {
 
     private Stage mainStage;
     private Scene mainScene;
-    private BootstrapUi bootstrapUi;
+    private BootstrapUiController bootstrapUiController;
     private BootstrapTask bootstrapTask;
 
     public static void main(String[] args) {
@@ -47,11 +47,11 @@ public class Bootstrap extends Application {
         mainStage.setScene(mainScene);
         mainStage.show();
         //  If no error, continue
-        if (bootstrapUi != null) {
-            bootstrapUi.setOnExitButtonAction(this::stopApp);
+        if (bootstrapUiController != null) {
+            bootstrapUiController.setOnExitButtonAction(this::stopApp);
             bootstrapTask =  new BootstrapTask(this::onBootstrapOk, this::onBootstrapSelfUpdateRequired,
                     this::onBootstrapFailed);
-            bootstrapUi.bindToTask(bootstrapTask);
+            bootstrapUiController.bindToTask(bootstrapTask);
             Thread thread = new Thread(bootstrapTask, "BootstrapTask");
             thread.setDaemon(true);
             thread.start();
@@ -62,7 +62,7 @@ public class Bootstrap extends Application {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/co/phoenixlab/dn/dngearsim/bootstrap/fxml/splash.fxml"));
         Parent root = loader.load();
-        bootstrapUi = loader.getController();
+        bootstrapUiController = loader.getController();
         return root;
     }
 
@@ -97,8 +97,8 @@ public class Bootstrap extends Application {
     }
 
     private void cleanUp() {
-        if (bootstrapUi != null) {
-            bootstrapUi.unbind();
+        if (bootstrapUiController != null) {
+            bootstrapUiController.unbind();
         }
         if (bootstrapTask != null) {
             bootstrapTask.cancel(true);

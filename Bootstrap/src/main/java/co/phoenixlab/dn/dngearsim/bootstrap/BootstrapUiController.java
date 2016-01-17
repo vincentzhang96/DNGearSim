@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 
-public class BootstrapUi {
+public class BootstrapUiController {
 
     @FXML
     private AnchorPane pane;
