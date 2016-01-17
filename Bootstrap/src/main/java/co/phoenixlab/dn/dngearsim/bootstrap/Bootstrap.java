@@ -48,6 +48,7 @@ public class Bootstrap extends Application {
         mainStage.show();
         //  If no error, continue
         if (bootstrapUi != null) {
+            bootstrapUi.setOnExitButtonAction(this::stopApp);
             bootstrapTask =  new BootstrapTask(this::onBootstrapOk, this::onBootstrapSelfUpdateRequired);
             bootstrapUi.bindToTask(bootstrapTask);
             Thread thread = new Thread(bootstrapTask, "BootstrapTask");

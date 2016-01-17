@@ -2,7 +2,9 @@ package co.phoenixlab.dn.dngearsim.bootstrap;
 
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
@@ -17,6 +19,11 @@ public class BootstrapUi {
 
     @FXML
     private Label statusText;
+
+    @FXML
+    private Button exitBtn;
+
+    private Runnable exitBtnAction;
 
     @FXML
     void initialize() {
@@ -37,5 +44,16 @@ public class BootstrapUi {
     public void unbind() {
         statusText.textProperty().unbind();
         loadingBar.widthProperty().unbind();
+    }
+
+    public void setOnExitButtonAction(Runnable runnable) {
+        exitBtnAction = runnable;
+    }
+
+    @FXML
+    private void onExitBtnPressed(ActionEvent event) {
+        if (exitBtnAction != null) {
+            exitBtnAction.run();
+        }
     }
 }

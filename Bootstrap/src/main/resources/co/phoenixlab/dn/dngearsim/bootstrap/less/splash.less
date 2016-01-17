@@ -3,6 +3,7 @@
 
 //  Colors
 @color-foreground-blue: #7BAFDC;
+@color-foreground-white: #B2B2B2;
 
 //  Sizes
 @size-window-width: 300px;
@@ -35,6 +36,21 @@
     -fx-max-height: @size-loading-bar-height;
     -fx-min-width: 2px;
     -fx-max-width: @size-window-width;
+  }
+
+  .exit-btn {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+    -fx-border-radius: 0;
+    -fx-text-fill: @color-foreground-white;
+    -fx-padding: 0;
+    -fx-cursor: hand;
+
+    &:hover {
+      -fx-text-fill: @color-foreground-blue;
+    }
   }
 }
 
