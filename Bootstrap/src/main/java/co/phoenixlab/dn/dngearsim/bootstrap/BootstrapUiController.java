@@ -1,6 +1,7 @@
 package co.phoenixlab.dn.dngearsim.bootstrap;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +25,7 @@ public class BootstrapUiController {
     private Button exitBtn;
 
     private Runnable exitBtnAction;
+    private NumberBinding barWidthBinding;
 
     @FXML
     void initialize() {
@@ -37,8 +39,9 @@ public class BootstrapUiController {
         assert task != null : "Task cannot be null, check invocation site";
         statusText.textProperty().
                 bind(task.messageProperty());
+        barWidthBinding = Bindings.multiply(pane.widthProperty(), task.progressProperty());
         loadingBar.widthProperty().
-                bind(Bindings.multiply(pane.widthProperty(), task.progressProperty()));
+                bind(barWidthBinding);
     }
 
     public void unbind() {
