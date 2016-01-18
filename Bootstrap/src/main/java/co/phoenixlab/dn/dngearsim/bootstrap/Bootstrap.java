@@ -11,14 +11,42 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.logging.*;
 
 public class Bootstrap extends Application {
 
+    private static final Logger LOGGER = Logger.getLogger("Launcher");
+    private static final DateFormat LOGGER_DATE_FORMAT =
+            DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
+
+    private static final Path APP_HOME;
+
+    static {
+        APP_HOME = Paths.get("").toAbsolutePath();
+        LOGGER.setLevel(Level.FINEST);
+        ConsoleHandler handler = new ConsoleHandler();
+        handler.setFormatter(new Formatter() {
+            @Override
+            public String format(LogRecord record) {
+                return String.format("[%7s] %s%n%s%n",
+                        record.getLevel().getLocalizedName(),
+                        LOGGER_DATE_FORMAT.format(new Date(record.getMillis())),
+                        record.getMessage());
+            }
+        });
+        LOGGER.setUseParentHandlers(false);
+        LOGGER.addHandler(handler);
+    }
     private Stage mainStage;
     private Scene mainScene;
     private BootstrapUiController bootstrapUiController;
@@ -37,7 +65,7 @@ public class Bootstrap extends Application {
             root = loadUi();
         } catch (Exception e) {
             e.printStackTrace();
-            root = loadErrorUi(e);
+            root = createBasicErrorUi(e);
         }
         mainScene = new Scene(root);
         mainStage.initStyle(StageStyle.TRANSPARENT);
@@ -66,7 +94,7 @@ public class Bootstrap extends Application {
         return root;
     }
 
-    private Parent loadErrorUi(Throwable t) {
+    private Parent createBasicErrorUi(Throwable t) {
         VBox root = new VBox(20);
         Label errorLbl = new Label("Fatal error while starting");
         errorLbl.setFont(Font.font(24));
@@ -88,6 +116,38 @@ public class Bootstrap extends Application {
     }
 
     private void onBootstrapFailed(String error) {
+        showErrorWindow(error);
+    }
+
+    private void showErrorWindow(String errorMsg) {
+        Stage errorStage = new Stage(StageStyle.TRANSPARENT);
+        errorStage.initOwner(mainStage);
+        errorStage.initModality(Modality.WINDOW_MODAL);
+        errorStage.setTitle("DN Gear Sim");
+        errorStage.setResizable(false);
+        errorStage.setAlwaysOnTop(true);
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/co/phoenixlab/dn/dngearsim/bootstrap/fxml/error.fxml"));
+            root = loader.load();
+            ErrorWindowController controller = loader.getController();
+            controller.setOnExitPressed(this::stopApp);
+            controller.setOnRetryPressed(() -> {
+                errorStage.close();
+                retryBootstrap();
+            });
+            controller.setErrorMessage(errorMsg);
+        } catch (Exception e) {
+            e.printStackTrace();
+            root = createBasicErrorUi(e);
+        }
+        Scene scene = new Scene(root);
+        errorStage.setScene(scene);
+        errorStage.show();
+    }
+
+    private void retryBootstrap() {
         //  TODO
     }
 
