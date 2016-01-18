@@ -77,12 +77,7 @@ public class Bootstrap extends Application {
         //  If no error, continue
         if (bootstrapUiController != null) {
             bootstrapUiController.setOnExitButtonAction(this::stopApp);
-            bootstrapTask =  new BootstrapTask(this::onBootstrapOk, this::onBootstrapSelfUpdateRequired,
-                    this::onBootstrapFailed);
-            bootstrapUiController.bindToTask(bootstrapTask);
-            Thread thread = new Thread(bootstrapTask, "BootstrapTask");
-            thread.setDaemon(true);
-            thread.start();
+            runBootstrapTask();
         }
     }
 
@@ -148,7 +143,18 @@ public class Bootstrap extends Application {
     }
 
     private void retryBootstrap() {
-        //  TODO
+        bootstrapTask.cancel(true);
+        bootstrapUiController.unbind();
+        runBootstrapTask();
+    }
+
+    private void runBootstrapTask() {
+        bootstrapTask = new BootstrapTask(this::onBootstrapOk, this::onBootstrapSelfUpdateRequired,
+                this::onBootstrapFailed);
+        bootstrapUiController.bindToTask(bootstrapTask);
+        Thread thread = new Thread(bootstrapTask, "BootstrapTask");
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @Override
