@@ -1,9 +1,7 @@
 // splash.less
 // Stylesheet for Bootstrap splash screen
 
-//  Colors
-@color-foreground-blue: #7BAFDC;
-@color-foreground-white: #B2B2B2;
+@import "global";
 
 //  Sizes
 @size-window-width: 300px;
@@ -11,14 +9,8 @@
 @size-loading-bar-height: 4px;
 
 .bootstrap {
-  -fx-background-image: url("../img/splash.png");
-  -fx-background-position: center;
-  -fx-background-repeat: no-repeat;
-  -fx-background-size: cover;
-  -fx-min-width: @size-window-width;
-  -fx-max-width: @size-window-width;
-  -fx-min-height: @size-window-height;
-  -fx-max-height: @size-window-height;
+  .gear-bg;
+  .fixed-size(@size-window-width, @size-window-height);
 
   .status-text {
     -fx-text-fill: @color-foreground-blue;
@@ -36,22 +28,6 @@
     -fx-max-height: @size-loading-bar-height;
     -fx-min-width: 2px;
     -fx-max-width: @size-window-width;
-  }
-
-  .exit-btn {
-    -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
-    -fx-border-width: 0;
-    -fx-border-radius: 0;
-    -fx-text-fill: @color-foreground-white;
-    -fx-padding: 0;
-    -fx-cursor: hand;
-    -fx-focus-traversable: false;
-
-    &:hover {
-      -fx-text-fill: @color-foreground-blue;
-    }
   }
 }
 
