@@ -4,7 +4,6 @@ import co.phoenixlab.dn.dngearsim.utils.version.VersionHashPair;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import java.nio.file.Files;
@@ -17,7 +16,7 @@ import java.util.function.Consumer;
 
 import static java.nio.file.StandardOpenOption.READ;
 
-public class BootstrapTask extends Task<Method> {
+public class BootstrapTask extends Task<BootstrapHandoff> {
 
     /**
      * Size of the buffer to use to read in the file for digesting
@@ -29,7 +28,7 @@ public class BootstrapTask extends Task<Method> {
     /**
      * Listener to call on successful load
      */
-    private final Consumer<Method> onBootstrapOk;
+    private final Consumer<BootstrapHandoff> onBootstrapOk;
 
     /**
      * Listener to call when the bootstrapper itself needs to be updated externally
@@ -58,7 +57,7 @@ public class BootstrapTask extends Task<Method> {
 
     private final Consumer<String> onFailed;
 
-    public BootstrapTask(Consumer<Method> onBootstrapOk, Runnable onBootstrapSelfUpdateRequired,
+    public BootstrapTask(Consumer<BootstrapHandoff> onBootstrapOk, Runnable onBootstrapSelfUpdateRequired,
                          Consumer<String> onFailed) {
         this.onBootstrapOk = onBootstrapOk;
         this.onBootstrapSelfUpdateRequired = onBootstrapSelfUpdateRequired;
@@ -77,7 +76,7 @@ public class BootstrapTask extends Task<Method> {
     }
 
     @Override
-    protected Method call() throws Exception {
+    protected BootstrapHandoff call() throws Exception {
         checkAndPerformLauncherUpdate();
 
 

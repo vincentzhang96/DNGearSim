@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -102,8 +101,8 @@ public class Bootstrap extends Application {
         return root;
     }
 
-    private void onBootstrapOk(Method transferMethod) {
-        //  TODO
+    private void onBootstrapOk(BootstrapHandoff handoff) {
+        handoff.handOff(this, mainStage, mainScene);
     }
 
     private void onBootstrapSelfUpdateRequired() {
