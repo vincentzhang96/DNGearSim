@@ -4,9 +4,9 @@ import java.util.regex.Pattern;
 
 public class Versions {
 
-    public static final String VERSION_ZERO = "0-0-0-0";
+    public static final String VERSION_ZERO = "0.0.0.0";
     public static final Pattern VERSION_STR_PATTERN = Pattern.compile(
-            "(([1-2]?)[0-9]?)[0-9]-(([1-2]?)[0-9]?)[0-9]-(([1-2]?)[0-9]?)[0-9]-(([1-2]?)[0-9]?)[0-9]");
+            "(([1-2]?)[0-9]?)[0-9]\\.(([1-2]?)[0-9]?)[0-9]\\.(([1-2]?)[0-9]?)[0-9]\\.(([1-2]?)[0-9]?)[0-9]");
 
     //  Private constructor, utility class
     private Versions() {
@@ -23,7 +23,7 @@ public class Versions {
         if (!VERSION_STR_PATTERN.matcher(versionStr).matches()) {
             throw new NumberFormatException(versionStr);
         }
-        String[] split = versionStr.split("-");
+        String[] split = versionStr.split("\\.");
         assert split.length == 4 : "Regex should have caught invalid format";
         int ver = fastParseVersionInt(split[0]) << 24;
         ver |= fastParseVersionInt(split[1]) << 16;
@@ -55,7 +55,7 @@ public class Versions {
     }
 
     public static String toString(int version) {
-        return String.format("%d-%d-%d-%d",
+        return String.format("%d.%d.%d.%d",
                 (version >>> 24),
                 (version >> 16) & 0xFF,
                 (version >> 8) & 0xFF,
