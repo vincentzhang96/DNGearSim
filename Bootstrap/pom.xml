@@ -10,10 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>Bootstrap</artifactId>
-    <version>1.0</version>
+    <version>0.1.0.0</version>
 
     <properties>
-        <dn.dngearsim.bootstrap.assets>${project.basedir}/src/main/resources/co/phoenixlab/dn/dngearsim/${artifactId}/</dn.dngearsim.bootstrap.assets>
+        <dn.dngearsim.bootstrap.assets>${project.basedir}/src/main/resources/co/phoenixlab/dn/dngearsim/${project.artifactId}/</dn.dngearsim.bootstrap.assets>
     </properties>
 
     <build>
@@ -28,6 +28,7 @@
                             <mainClass>co.phoenixlab.dn.dngearsim.bootstrap.Bootstrap</mainClass>
                         </manifest>
                     </archive>
+                    <finalName>bootstrap</finalName>
                 </configuration>
             </plugin>
             <plugin>

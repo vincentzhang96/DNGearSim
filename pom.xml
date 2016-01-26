@@ -17,7 +17,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dn.dngearsim.version>1.0.0 Alpha &quot;Warrior&quot;</dn.dngearsim.version>
+        <dn.dngearsim.version>0.0.0.1</dn.dngearsim.version>
+        <dn.dngearsim.codename>WARRIOR</dn.dngearsim.codename>
     </properties>
 
     <repositories>

@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>Patcher</artifactId>
-    <version>1.0</version>
+    <version>0.1.0.0</version>
 
     <build>
         <plugins>
@@ -47,6 +47,8 @@
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
+                    <finalName>patcher</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
                     <execution>
@@ -59,6 +61,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
