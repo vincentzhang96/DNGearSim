@@ -24,12 +24,11 @@
 
 package co.phoenixlab.dn.dngearsim.bootstrap;
 
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public interface BootstrapHandoff {
 
-    void handOff(Application application, Stage mainStage, Scene mainScene);
+    void handOff(Bootstrap bootstrap, Stage mainStage, Scene mainScene);
 
 }
