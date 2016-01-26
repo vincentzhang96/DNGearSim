@@ -11,9 +11,9 @@ public class VersionsTest {
     @Test
     public void testParseVersion() throws Exception {
         assertEquals(0, parseVersion(VERSION_ZERO));
-        assertEquals(0x00000009, parseVersion("0-0-0-9"));
-        assertEquals(0xFF00FF00, parseVersion("255-0-255-0"));
-        assertEquals(0xFFFFFFFF, parseVersion("255-255-255-255"));
+        assertEquals(0x00000009, parseVersion("0.0.0.9"));
+        assertEquals(0xFF00FF00, parseVersion("255.0.255.0"));
+        assertEquals(0xFFFFFFFF, parseVersion("255.255.255.255"));
     }
 
 
@@ -34,22 +34,22 @@ public class VersionsTest {
 
     @Test(expected = NumberFormatException.class)
     public void testParseVersionFailRange() throws Exception {
-        parseVersion("256-0-0-0");
+        parseVersion("256.0.0.0");
     }
 
     @Test(expected = NumberFormatException.class)
     public void testParseVersionFailDigits() throws Exception {
-        parseVersion("2256-0-0-0");
+        parseVersion("2256.0.0.0");
     }
 
     @Test(expected = NumberFormatException.class)
     public void testParseVersionFailBadDigits() throws Exception {
-        parseVersion("1-4A-0-0");
+        parseVersion("1.4A.0.0");
     }
 
     @Test
     public void testToString() throws Exception {
-        assertEquals("1-2-3-4", Versions.toString(0x01020304));
+        assertEquals("1.2.3.4", Versions.toString(0x01020304));
     }
 
     @Test
