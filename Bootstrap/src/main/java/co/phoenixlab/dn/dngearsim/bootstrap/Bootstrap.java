@@ -20,6 +20,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.logging.*;
 
 public class Bootstrap extends Application {
@@ -50,9 +52,22 @@ public class Bootstrap extends Application {
     private Scene mainScene;
     private BootstrapUiController bootstrapUiController;
     private BootstrapTask bootstrapTask;
+    private ResourceBundle localeBundle;
+
+    private Throwable initThrowable;
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    @Override
+    public void init() throws Exception {
+        try {
+            localeBundle = ResourceBundle.getBundle("co.phoenixlab.dn.dngearsim.bootstrap.locale.bootstrap",
+                    Locale.forLanguageTag(System.getProperty("dngs.locale", "en_US")));
+        } catch (Exception e) {
+            initThrowable = e;
+        }
     }
 
     @Override
@@ -60,11 +75,15 @@ public class Bootstrap extends Application {
         Platform.setImplicitExit(false);
         mainStage = primaryStage;
         Parent root;
-        try {
-            root = loadUi();
-        } catch (Exception e) {
-            e.printStackTrace();
-            root = createBasicErrorUi(e);
+        if (initThrowable != null) {
+            root = createBasicErrorUi(initThrowable);
+        } else {
+            try {
+                root = loadUi();
+            } catch (Exception e) {
+                e.printStackTrace();
+                root = createBasicErrorUi(e);
+            }
         }
         mainScene = new Scene(root);
         mainStage.initStyle(StageStyle.TRANSPARENT);
@@ -82,7 +101,8 @@ public class Bootstrap extends Application {
 
     private Parent loadUi() throws IOException {
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/co/phoenixlab/dn/dngearsim/bootstrap/fxml/splash.fxml"));
+                getClass().getResource("/co/phoenixlab/dn/dngearsim/bootstrap/fxml/splash.fxml"),
+                localeBundle);
         Parent root = loader.load();
         bootstrapUiController = loader.getController();
         return root;
@@ -123,7 +143,8 @@ public class Bootstrap extends Application {
         Parent root;
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/co/phoenixlab/dn/dngearsim/bootstrap/fxml/error.fxml"));
+                    getClass().getResource("/co/phoenixlab/dn/dngearsim/bootstrap/fxml/error.fxml"),
+                    localeBundle);
             root = loader.load();
             ErrorWindowController controller = loader.getController();
             controller.setOnExitPressed(this::stopApp);
@@ -149,7 +170,7 @@ public class Bootstrap extends Application {
 
     private void runBootstrapTask() {
         bootstrapTask = new BootstrapTask(this::onBootstrapOk, this::onBootstrapSelfUpdateRequired,
-                this::onBootstrapFailed);
+                this::onBootstrapFailed, localeBundle);
         bootstrapUiController.bindToTask(bootstrapTask);
         Thread thread = new Thread(bootstrapTask, "BootstrapTask");
         thread.setDaemon(true);

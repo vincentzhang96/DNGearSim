@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -57,11 +58,14 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
 
     private final Consumer<String> onFailed;
 
+    private final ResourceBundle localeBundle;
+
     public BootstrapTask(Consumer<BootstrapHandoff> onBootstrapOk, Runnable onBootstrapSelfUpdateRequired,
-                         Consumer<String> onFailed) {
+                         Consumer<String> onFailed, ResourceBundle localeBundle) {
         this.onBootstrapOk = onBootstrapOk;
         this.onBootstrapSelfUpdateRequired = onBootstrapSelfUpdateRequired;
         this.onFailed = onFailed;
+        this.localeBundle = localeBundle;
         this.errorMessage = Optional.empty();
         this.selfUpdateRequred = false;
         updateTitle("BootstrapTask");
@@ -85,7 +89,7 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
     }
 
     private void checkAndPerformLauncherUpdate() throws Exception {
-        updateMessage("Checking updater version");
+        updateMessage(localeBundle.getString("bootstrap.splash.text.checking_updater"));
         TimeUnit.MILLISECONDS.sleep(500);
         VersionHashPair local = getLocalUpdaterVersion();
         VersionHashPair remote = getRemoteUpdaterVersion();
@@ -94,14 +98,13 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
         //  perform an update
         //  And if we can't do either, we're screwed
         if (remote == NOT_FOUND && local == NOT_FOUND) {
-            errorMessage = Optional.of("Launcher is missing and could not be downloaded\n" +
-                    "Please check your connection and try again");
+            errorMessage = Optional.of(localeBundle.getString("bootstrap.splash.error.text.no_updater"));
             throw new Exception();
         }
         if (remote.isVersionHigherThan(local)  || (remote.areVersionsEqual(local) && !remote.areHashesEqual(local))) {
             performUpdate(remote);
         } else {
-            updateMessage("Updater check OK");
+            updateMessage(localeBundle.getString("bootstrap.splash.text.updater_ok"));
             TimeUnit.MILLISECONDS.sleep(500);
         }
     }
@@ -140,9 +143,10 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
     private String getExceptionErrorMessage() {
         Throwable throwable = getException();
         if (throwable != null) {
-            return "Unexpected error: " + throwable.getClass().getSimpleName();
+            return localeBundle.getString("bootstrap.splash.error.text.unexpected_exception") +
+                    " " + throwable.getClass().getSimpleName();
         } else {
-            return "Unknown error";
+            return localeBundle.getString("bootstrap.splash.error.text.unexpected");
         }
     }
 
