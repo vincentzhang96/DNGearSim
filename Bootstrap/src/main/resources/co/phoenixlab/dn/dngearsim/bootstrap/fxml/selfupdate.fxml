@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="self-update" stylesheets="@../css/selfupdate.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="48.0" layoutY="71.0" styleClass="title-text" text="%bootstrap.splash.major_update.title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0" />
+       <Label fx:id="detailText" layoutX="137.0" layoutY="100.0" styleClass="detail-text" text="%bootstrap.splash.major_update.text" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+       <HBox alignment="CENTER" layoutX="50.0" layoutY="100.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+           <children>
+               <Button fx:id="downloadDialogBtn" defaultButton="true" mnemonicParsing="false" onAction="#onDownloadBtnPressed" text="%bootstrap.splash.major_update.download" />
+               <Button fx:id="continueDialogBtn" cancelButton="true" mnemonicParsing="false" onAction="#onContinueBtnPressed" text="%bootstrap.core.continue" />
+           </children>
+           <padding>
+               <Insets bottom="10.0" top="10.0" />
+           </padding>
+       </HBox>
+       <Button fx:id="exitBtn" layoutX="262.0" layoutY="2.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#onExitBtnPressed" prefHeight="20.0" prefWidth="20.0" styleClass="exit-btn" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+
+   </children>
+</AnchorPane>
