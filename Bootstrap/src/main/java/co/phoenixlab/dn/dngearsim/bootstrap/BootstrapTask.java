@@ -56,8 +56,14 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
      */
     private Optional<String> errorMessage;
 
+    /**
+     * Handler to call when the task fails, with the failure reason
+     */
     private final Consumer<String> onFailed;
 
+    /**
+     * The ResourceBundle for localization strings
+     */
     private final ResourceBundle localeBundle;
 
     public BootstrapTask(Consumer<BootstrapHandoff> onBootstrapOk, Runnable onBootstrapSelfUpdateRequired,
@@ -81,14 +87,26 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
 
     @Override
     protected BootstrapHandoff call() throws Exception {
-        checkAndPerformLauncherUpdate();
+        if (doesBootstrapRequireUpdate()) {
+            selfUpdateRequred = true;
+            return null;
+        }
+        checkAndPerformUpdaterUpdate();
 
 
         //  TODO
         return null;
     }
 
-    private void checkAndPerformLauncherUpdate() throws Exception {
+    private boolean doesBootstrapRequireUpdate() throws Exception {
+        updateMessage(localeBundle.getString("bootstrap.splash.text.checking_bootstrap"));
+        TimeUnit.MILLISECONDS.sleep(500);
+
+
+        return false;
+    }
+
+    private void checkAndPerformUpdaterUpdate() throws Exception {
         updateMessage(localeBundle.getString("bootstrap.splash.text.checking_updater"));
         TimeUnit.MILLISECONDS.sleep(500);
         VersionHashPair local = getLocalUpdaterVersion();
