@@ -1,17 +1,21 @@
 package co.phoenixlab.dn.dngearsim.bootstrap;
 
 import co.phoenixlab.dn.dngearsim.utils.version.VersionHashPair;
+import co.phoenixlab.dn.dngearsim.utils.version.Versions;
 import javafx.concurrent.Task;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -113,9 +117,15 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
     }
 
     private int getLocalBootstrapVersion() {
-        
-        //  TODO
-        return NOT_FOUND_I;
+        try (InputStream inputStream = getClass().getResourceAsStream("/co/phoenixlab/dn/dngearsim/bootstrap/version")){
+            Scanner scanner = new Scanner(inputStream);
+            scanner.useDelimiter(";");
+            String versionStr = scanner.next();
+            String compileTime = scanner.next();
+            return Versions.parseVersion(versionStr);
+        } catch (IOException | NumberFormatException | NoSuchElementException exception) {
+            return NOT_FOUND_I;
+        }
     }
 
     private int getLatestRemoteBootstrapVersion() {
