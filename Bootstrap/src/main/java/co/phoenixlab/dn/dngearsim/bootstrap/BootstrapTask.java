@@ -26,6 +26,8 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
 
     private static final VersionHashPair NOT_FOUND = new VersionHashPair();
 
+    private static final int NOT_FOUND_I = 0;
+
     /**
      * Listener to call on successful load
      */
@@ -101,9 +103,25 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
     private boolean doesBootstrapRequireUpdate() throws Exception {
         updateMessage(localeBundle.getString("bootstrap.splash.text.checking_bootstrap"));
         TimeUnit.MILLISECONDS.sleep(500);
+        int local = getLocalBootstrapVersion();
+        int remote = getLatestRemoteBootstrapVersion();
+        //  This system does not perform a hashs check because the assumption is that if the bootstrap is not intact
+        //  then no guarantee can be made about the running code
+        //  Requires update if the remote version is greater than the local
+        //  Don't update if we can't get a response from the server
+        return remote != NOT_FOUND_I && remote > local;
+    }
 
+    private int getLocalBootstrapVersion() {
+        
+        //  TODO
+        return NOT_FOUND_I;
+    }
 
-        return false;
+    private int getLatestRemoteBootstrapVersion() {
+
+        //  TODO
+        return NOT_FOUND_I;
     }
 
     private void checkAndPerformUpdaterUpdate() throws Exception {
