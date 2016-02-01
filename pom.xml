@@ -7,7 +7,7 @@
     <groupId>co.phoenixlab.dn.gearsim</groupId>
     <artifactId>DNGearSim</artifactId>
     <packaging>pom</packaging>
-    <version>${dn.dngearsim.version}</version>
+    <version>1</version>
     <name>Dragon Nest Gear Simulator</name>
     <modules>
         <module>Bootstrap</module>
@@ -17,8 +17,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dn.dngearsim.version>0.0.0.1</dn.dngearsim.version>
         <dn.dngearsim.codename>WARRIOR</dn.dngearsim.codename>
+        <build.timestamp>${maven.build.timestamp}</build.timestamp>
+        <maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
     </properties>
 
     <repositories>

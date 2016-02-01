@@ -5,7 +5,7 @@
     <parent>
         <artifactId>DNGearSim</artifactId>
         <groupId>co.phoenixlab.dn.gearsim</groupId>
-        <version>${dn.dngearsim.version}</version>
+        <version>1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -45,6 +45,24 @@
                 </configuration>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources/co/phoenixlab/dn/dngearsim/bootstrap/</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>version</include>
+                </includes>
+                <targetPath>co/phoenixlab/dn/dngearsim/bootstrap</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/resources/co/phoenixlab/dn/dngearsim/bootstrap/</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>version</exclude>
+                </excludes>
+                <targetPath>co/phoenixlab/dn/dngearsim/bootstrap</targetPath>
+            </resource>
+        </resources>
     </build>
 
     <dependencies>
