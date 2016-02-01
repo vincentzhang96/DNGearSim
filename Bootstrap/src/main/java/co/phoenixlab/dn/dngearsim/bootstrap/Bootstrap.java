@@ -126,7 +126,30 @@ public class Bootstrap extends Application {
     }
 
     private void onBootstrapSelfUpdateRequired() {
-        //  TODO
+        Stage updateStage = new Stage(StageStyle.TRANSPARENT);
+        updateStage.initOwner(mainStage);
+        updateStage.initModality(Modality.WINDOW_MODAL);
+        updateStage.setTitle("DN Gear Sim");
+        updateStage.setResizable(false);
+        updateStage.setAlwaysOnTop(true);
+        Parent root;
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/co/phoenixlab/dn/dngearsim/bootstrap/fxml/selfupdate.fxml"),
+                    localeBundle);
+            root = loader.load();
+            SelfUpdateWindowController controller = loader.getController();
+            controller.setOnExitPressed(this::stopApp);
+            //  TODO
+//            controller.setOnContinuePressed();
+//            controller.setOnDownloadPressed();
+        } catch (Exception e) {
+            e.printStackTrace();
+            root = createBasicErrorUi(e);
+        }
+        Scene scene = new Scene(root);
+        updateStage.setScene(scene);
+        updateStage.show();
     }
 
     private void onBootstrapFailed(String error) {

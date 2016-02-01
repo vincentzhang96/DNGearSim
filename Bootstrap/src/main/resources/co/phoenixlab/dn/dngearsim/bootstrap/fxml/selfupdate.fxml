@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="self-update" stylesheets="@../css/selfupdate.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="self-update" stylesheets="@../css/selfupdate.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.phoenixlab.dn.dngearsim.bootstrap.SelfUpdateWindowController">
    <children>
       <Label layoutX="48.0" layoutY="71.0" styleClass="title-text" text="%bootstrap.splash.major_update.title" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0" />
        <Label fx:id="detailText" layoutX="137.0" layoutY="100.0" styleClass="detail-text" text="%bootstrap.splash.major_update.text" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
