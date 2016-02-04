@@ -24,6 +24,8 @@
 
 package co.phoenixlab.dn.dngearsim.bootstrap;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -38,6 +40,8 @@ public class BootstrapConfig {
     public final Path updaterBinDir;
     public final Path updaterJarPath;
 
+    public final URL remoteUpdateBaseUrl;
+
     public BootstrapConfig() {
         binaryDir = Paths.get(System.getProperty("dngs.bootstrap.bindir", "bin"));
         appConfigDir = Paths.get(System.getProperty("dngs.bootstrap.appconfigdir", "appconfig"));
@@ -48,6 +52,13 @@ public class BootstrapConfig {
         String updaterProjectName = System.getProperty("dngs.bootstrap.updatername", "updater");
         updaterBinDir = binaryDir.resolve(updaterProjectName);
         updaterJarPath = updaterBinDir.resolve(updaterProjectName + ".jar");
+
+        try {
+            remoteUpdateBaseUrl = new URL(System.getProperty("dngs.bootstrap.remoteUrl",
+                    "http://ilithyia.phoenixlab.co/dn/gearsim/"));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Invalid configuration: Bad update URL");
+        }
     }
 
     
