@@ -102,6 +102,11 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
      */
     private final ResourceBundle localeBundle;
 
+    /**
+     * Configuration for this bootstrap task
+     */
+    private BootstrapConfig config;
+
     public BootstrapTask(Consumer<BootstrapHandoff> onBootstrapOk, Runnable onBootstrapSelfUpdateRequired,
                          Consumer<String> onFailed, ResourceBundle localeBundle) {
         this.onBootstrapOk = onBootstrapOk;
@@ -123,6 +128,7 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
 
     @Override
     protected BootstrapHandoff call() throws Exception {
+        config = new BootstrapConfig();
         if (doesBootstrapRequireUpdate()) {
             selfUpdateRequred = true;
             return null;
