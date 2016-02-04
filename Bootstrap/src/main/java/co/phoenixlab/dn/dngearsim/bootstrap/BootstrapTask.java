@@ -28,8 +28,14 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
      */
     private static final int DIGEST_BUFFER_SIZE = 8192;
 
+    /**
+     * Return result when the version-hashpair can't be retrieved
+     */
     private static final VersionHashPair NOT_FOUND = new VersionHashPair();
 
+    /**
+     * Return result when the version can't be retrieved
+     */
     private static final int NOT_FOUND_I = 0;
 
     /**
