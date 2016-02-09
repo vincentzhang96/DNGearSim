@@ -50,7 +50,7 @@ import java.util.logging.*;
 
 public class Bootstrap extends Application {
 
-    private static final Logger LOGGER = Logger.getLogger("Launcher");
+    public static final Logger LOGGER = Logger.getLogger("Launcher");
     private static final DateFormat LOGGER_DATE_FORMAT =
             DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
