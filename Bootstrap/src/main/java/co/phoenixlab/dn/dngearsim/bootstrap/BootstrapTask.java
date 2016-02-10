@@ -28,10 +28,14 @@ import co.phoenixlab.dn.dngearsim.utils.version.VersionHashPair;
 import co.phoenixlab.dn.dngearsim.utils.version.Versions;
 import javafx.concurrent.Task;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
@@ -153,7 +157,7 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
     }
 
     private int getLocalBootstrapVersion() {
-        try (InputStream inputStream = getClass().getResourceAsStream("/co/phoenixlab/dn/dngearsim/bootstrap/version")){
+        try (InputStream inputStream = getClass().getResourceAsStream("/co/phoenixlab/dn/dngearsim/bootstrap/version")) {
             Scanner scanner = new Scanner(inputStream);
             scanner.useDelimiter(";");
             String versionStr = scanner.next();
@@ -183,7 +187,7 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
             errorMessage = Optional.of(localeBundle.getString("bootstrap.splash.error.text.no_updater"));
             throw new Exception();
         }
-        if (remote.isVersionHigherThan(local)  || (remote.areVersionsEqual(local) && !remote.areHashesEqual(local))) {
+        if (remote.isVersionHigherThan(local) || (remote.areVersionsEqual(local) && !remote.areHashesEqual(local))) {
             performUpdate(remote);
         } else {
             updateMessage(localeBundle.getString("bootstrap.splash.text.updater_ok"));
@@ -192,14 +196,39 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
     }
 
     private VersionHashPair getLocalUpdaterVersion() {
-
-        //  TODO
+        //  Find the JAR
+        Path jarPath = config.updaterJarPath;
+        if (Files.notExists(jarPath)) {
+            return NOT_FOUND;
+        }
+        //  Get the version info next to the JAR
+        Path updaterVersionPath = config.updaterBinDir.resolve("VERSION");
+        if (Files.notExists(updaterVersionPath)) {
+            return NOT_FOUND;
+        }
+        try {
+            byte[] data = Files.readAllBytes(updaterVersionPath);
+            String versionData = new String(data, StandardCharsets.UTF_8);
+            VersionHashPair pair = VersionHashPair.parse(versionData);
+            //  Verify hash
+            byte[] hash = computeFileHash(jarPath);
+            if (pair.areHashesEqual(new VersionHashPair(0, hash))) {
+                return pair;
+            }
+        } catch (Exception ignored) {
+        }
         return NOT_FOUND;
     }
 
     private VersionHashPair getRemoteUpdaterVersion() {
-
-        //  TODO
+        try {
+            URL patcherVersionURL = new URL(config.remoteUpdateBaseUrl + config.updaterProjectName + "/VERSION");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(patcherVersionURL.openStream()))) {
+                String vers = reader.readLine();
+                return VersionHashPair.parse(vers);
+            }
+        } catch (Exception ignored) {
+        }
         return NOT_FOUND;
     }
 
