@@ -222,7 +222,7 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
 
     private VersionHashPair getRemoteUpdaterVersion() {
         try {
-            URL patcherVersionURL = new URL(config.remoteUpdateBaseUrl + config.updaterProjectName + "/VERSION");
+            URL patcherVersionURL = new URL(config.remoteUpdateBaseUrl + config.updaterProjectName + "/version");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(patcherVersionURL.openStream()))) {
                 String vers = reader.readLine();
                 return VersionHashPair.parse(vers);
