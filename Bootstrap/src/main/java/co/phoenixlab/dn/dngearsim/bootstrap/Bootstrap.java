@@ -39,6 +39,8 @@ import javafx.scene.text.Font;
 import javafx.stage.*;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -71,12 +73,14 @@ public class Bootstrap extends Application {
         LOGGER.setUseParentHandlers(false);
         LOGGER.addHandler(handler);
     }
+
     private Stage mainStage;
     private Scene mainScene;
     private BootstrapUiController bootstrapUiController;
     private BootstrapTask bootstrapTask;
     private ResourceBundle localeBundle;
 
+    private boolean startOk;
     private Throwable initThrowable;
 
     public static void main(String[] args) {
@@ -96,6 +100,7 @@ public class Bootstrap extends Application {
     @Override
     public void start(Stage primaryStage) {
         Platform.setImplicitExit(false);
+        Thread.setDefaultUncaughtExceptionHandler(this::uncaughtException);
         mainStage = primaryStage;
         Parent root;
         if (initThrowable != null) {
@@ -115,6 +120,7 @@ public class Bootstrap extends Application {
         mainStage.setAlwaysOnTop(true);
         mainStage.setScene(mainScene);
         mainStage.show();
+        startOk = true;
         centerWindow(mainStage);
         //  If no error, continue
         if (bootstrapUiController != null) {
@@ -131,6 +137,7 @@ public class Bootstrap extends Application {
         bootstrapUiController = loader.getController();
         return root;
     }
+
 
     private Parent createBasicErrorUi(Throwable t) {
         VBox root = new VBox(20);
@@ -181,7 +188,7 @@ public class Bootstrap extends Application {
         showErrorWindow(error);
     }
 
-    private void showErrorWindow(String errorMsg) {
+    private Stage showErrorWindow(String errorMsg) {
         Stage errorStage = new Stage(StageStyle.TRANSPARENT);
         errorStage.initOwner(mainStage);
         errorStage.initModality(Modality.WINDOW_MODAL);
@@ -207,8 +214,9 @@ public class Bootstrap extends Application {
         }
         Scene scene = new Scene(root);
         errorStage.setScene(scene);
-        errorStage.show();
         centerWindow(errorStage);
+        errorStage.show();
+        return errorStage;
     }
 
     private void retryBootstrap() {
@@ -230,6 +238,33 @@ public class Bootstrap extends Application {
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         window.setX(bounds.getWidth() / 2 - window.getWidth() / 2);
         window.setY(bounds.getHeight() / 2 - window.getHeight() / 2 - 10);
+    }
+
+    private void uncaughtException(Thread thread, Throwable throwable) {
+        StringWriter writer = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(writer);
+        throwable.printStackTrace(printWriter);
+        String formatted = String.format("Fatal exception in thread %s \"%s\": %s",
+                thread.getId(), thread.getName(), writer.toString());
+        System.err.println(formatted);
+        System.err.println("Application will now exit");
+        //  Check first if the JFX application started successfully
+        if (startOk) {
+            try {
+                //  TODO show popup
+            } catch (Exception e) {
+                //  Failed to create the window, take note
+                writer = new StringWriter();
+                printWriter = new PrintWriter(writer);
+                e.printStackTrace(printWriter);
+                formatted = String.format("Fatal exception while handling exception: %s",
+                        writer.toString());
+                System.err.println(formatted);
+                System.exit(-2);
+                return;
+            }
+        }
+        System.exit(-1);
     }
 
     @Override
