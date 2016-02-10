@@ -29,15 +29,14 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import javafx.stage.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -116,6 +115,7 @@ public class Bootstrap extends Application {
         mainStage.setAlwaysOnTop(true);
         mainStage.setScene(mainScene);
         mainStage.show();
+        centerWindow(mainStage);
         //  If no error, continue
         if (bootstrapUiController != null) {
             bootstrapUiController.setOnExitButtonAction(this::stopApp);
@@ -174,6 +174,7 @@ public class Bootstrap extends Application {
         Scene scene = new Scene(root);
         updateStage.setScene(scene);
         updateStage.show();
+        centerWindow(updateStage);
     }
 
     private void onBootstrapFailed(String error) {
@@ -207,6 +208,7 @@ public class Bootstrap extends Application {
         Scene scene = new Scene(root);
         errorStage.setScene(scene);
         errorStage.show();
+        centerWindow(errorStage);
     }
 
     private void retryBootstrap() {
@@ -222,6 +224,12 @@ public class Bootstrap extends Application {
         Thread thread = new Thread(bootstrapTask, "BootstrapTask");
         thread.setDaemon(true);
         thread.start();
+    }
+
+    private void centerWindow(Window window) {
+        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+        window.setX(bounds.getWidth() / 2 - window.getWidth() / 2);
+        window.setY(bounds.getHeight() / 2 - window.getHeight() / 2 - 10);
     }
 
     @Override
