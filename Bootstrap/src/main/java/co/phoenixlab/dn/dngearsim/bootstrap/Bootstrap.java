@@ -38,10 +38,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.*;
+import javafx.stage.Window;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -174,8 +178,14 @@ public class Bootstrap extends Application {
             SelfUpdateWindowController controller = loader.getController();
             controller.setOnExitPressed(this::stopApp);
             //  TODO
-//            controller.setOnContinuePressed();
-//            controller.setOnDownloadPressed();
+            controller.setOnContinuePressed(() -> {
+                updateStage.close();
+                onBootstrapContinue();
+            });
+            controller.setOnDownloadPressed(() -> {
+                updateStage.close();
+                showDownloadPage();
+            });
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to create self update UI", e);
             root = createBasicErrorUi(e);
@@ -184,6 +194,28 @@ public class Bootstrap extends Application {
         updateStage.setScene(scene);
         updateStage.show();
         centerWindow(updateStage);
+    }
+
+    private void onBootstrapContinue() {
+        //  TODO
+    }
+
+    private void showDownloadPage() {
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                try {
+                    desktop.browse(new URI("https://github.com/vincentzhang96/DNGearSim"));
+                    //  Close the app
+                    stopApp();
+                    return;
+                } catch (IOException | URISyntaxException e) {
+                    LOGGER.log(Level.WARNING, "Unable to show download page", e);
+                    //  TODO
+                }
+            }
+        }
+        //  TODO
     }
 
     private void onBootstrapFailed(String error) {
