@@ -157,7 +157,7 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
         //  then no guarantee can be made about the running code
         //  Requires update if the remote version is greater than the local
         //  Don't update if we can't get a response from the server
-        return remote != NOT_FOUND_I && remote > local;
+        return remote != NOT_FOUND_I && Versions.compare(remote, local) > 0;
     }
 
     private int getLocalBootstrapVersion() {
