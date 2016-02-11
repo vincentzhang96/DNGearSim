@@ -36,6 +36,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.*;
 
 import java.io.IOException;
@@ -251,7 +252,8 @@ public class Bootstrap extends Application {
         //  Check first if the JFX application started successfully
         if (startOk) {
             try {
-                //  TODO show popup
+                Stage stage = createFatalErrorPopup(thread, throwable);
+                stage.showAndWait();
             } catch (Exception e) {
                 //  Failed to create the window, take note
                 writer = new StringWriter();
@@ -265,6 +267,34 @@ public class Bootstrap extends Application {
             }
         }
         System.exit(-1);
+    }
+
+    private Stage createFatalErrorPopup(Thread thread, Throwable throwable) {
+        Stage stage = new Stage();
+        VBox root = new VBox(20);
+        Scene scene = new Scene(root);
+        Label errorLbl = new Label("There was an unexpected problem");
+        errorLbl.setFont(Font.font(24));
+        Label detailLbl = new Label("Something bad happened, and the program must close.\n" +
+                "Sorry about that.\nCaused by " + throwable.toString() + "\nin " + thread.getName());
+        Button exitBtn = new Button("Exit");
+        exitBtn.setPadding(new Insets(5, 10, 5, 10));
+        detailLbl.setTextAlignment(TextAlignment.CENTER);
+        exitBtn.setOnAction(ae -> stage.close());
+        root.setAlignment(Pos.CENTER);
+        root.getChildren().addAll(errorLbl, detailLbl, exitBtn);
+        root.setPadding(new Insets(10));
+        stage.initStyle(StageStyle.UTILITY);
+        stage.setTitle("DN Gear Sim");
+        stage.setResizable(false);
+        stage.setAlwaysOnTop(true);
+        stage.setScene(scene);
+        //  Add some basic style
+        root.setStyle("-fx-background-color: #151515");
+        errorLbl.setStyle("-fx-text-fill: #7BAFDC");
+        detailLbl.setStyle("-fx-text-fill: #B2B2B2");
+        Platform.runLater(() -> centerWindow(stage));
+        return stage;
     }
 
     @Override
