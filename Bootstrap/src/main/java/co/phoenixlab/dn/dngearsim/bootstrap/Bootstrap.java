@@ -57,6 +57,7 @@ public class Bootstrap extends Application {
             DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
     private static final Path APP_HOME;
+    public static final String DEFAULT_WINDOW_TITLE = "DN Gear Sim";
 
     static {
         APP_HOME = Paths.get("").toAbsolutePath();
@@ -116,7 +117,7 @@ public class Bootstrap extends Application {
         }
         mainScene = new Scene(root);
         mainStage.initStyle(StageStyle.TRANSPARENT);
-        mainStage.setTitle("DN Gear Sim");
+        mainStage.setTitle(DEFAULT_WINDOW_TITLE);
         mainStage.setResizable(false);
         mainStage.setAlwaysOnTop(true);
         mainStage.setScene(mainScene);
@@ -161,7 +162,7 @@ public class Bootstrap extends Application {
         Stage updateStage = new Stage(StageStyle.TRANSPARENT);
         updateStage.initOwner(mainStage);
         updateStage.initModality(Modality.WINDOW_MODAL);
-        updateStage.setTitle("DN Gear Sim");
+        updateStage.setTitle(DEFAULT_WINDOW_TITLE);
         updateStage.setResizable(false);
         updateStage.setAlwaysOnTop(true);
         Parent root;
@@ -193,7 +194,7 @@ public class Bootstrap extends Application {
         Stage errorStage = new Stage(StageStyle.TRANSPARENT);
         errorStage.initOwner(mainStage);
         errorStage.initModality(Modality.WINDOW_MODAL);
-        errorStage.setTitle("DN Gear Sim");
+        errorStage.setTitle(DEFAULT_WINDOW_TITLE);
         errorStage.setResizable(false);
         errorStage.setAlwaysOnTop(true);
         Parent root;
@@ -285,7 +286,7 @@ public class Bootstrap extends Application {
         root.getChildren().addAll(errorLbl, detailLbl, exitBtn);
         root.setPadding(new Insets(10));
         stage.initStyle(StageStyle.UTILITY);
-        stage.setTitle("DN Gear Sim");
+        stage.setTitle(DEFAULT_WINDOW_TITLE);
         stage.setResizable(false);
         stage.setAlwaysOnTop(true);
         stage.setScene(scene);
