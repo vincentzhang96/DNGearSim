@@ -215,8 +215,8 @@ public class Bootstrap extends Application {
         }
         Scene scene = new Scene(root);
         errorStage.setScene(scene);
-        centerWindow(errorStage);
         errorStage.show();
+        centerWindow(errorStage);
         return errorStage;
     }
 
