@@ -46,6 +46,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 import static java.nio.file.StandardOpenOption.READ;
 
@@ -150,6 +151,8 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
         TimeUnit.MILLISECONDS.sleep(500);
         int local = getLocalBootstrapVersion();
         int remote = getLatestRemoteBootstrapVersion();
+        Bootstrap.LOGGER.info(String.format("Local: %s Remtoe: %s",
+                Versions.toString(local), Versions.toString(remote)));
         //  This system does not perform a hashs check because the assumption is that if the bootstrap is not intact
         //  then no guarantee can be made about the running code
         //  Requires update if the remote version is greater than the local
@@ -170,8 +173,15 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
     }
 
     private int getLatestRemoteBootstrapVersion() {
-
-        //  TODO
+        try {
+            URL bootstrapVersionUrl = new URL(config.remoteUpdateBaseUrl + "bootstrap/version");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(bootstrapVersionUrl.openStream()))) {
+                String vers = reader.readLine();
+                return Versions.parseVersion(vers);
+            }
+        } catch (Exception ignored) {
+            Bootstrap.LOGGER.log(Level.WARNING, "Unable to get remote bootstrap version", ignored);
+        }
         return NOT_FOUND_I;
     }
 
