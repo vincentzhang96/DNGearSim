@@ -111,7 +111,7 @@ public class Bootstrap extends Application {
             try {
                 root = loadUi();
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.log(Level.WARNING, "Unable to load main UI", e);
                 root = createBasicErrorUi(e);
             }
         }
@@ -177,7 +177,7 @@ public class Bootstrap extends Application {
 //            controller.setOnContinuePressed();
 //            controller.setOnDownloadPressed();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "Unable to create self update UI", e);
             root = createBasicErrorUi(e);
         }
         Scene scene = new Scene(root);
@@ -211,7 +211,7 @@ public class Bootstrap extends Application {
             });
             controller.setErrorMessage(errorMsg);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "Unable to create pretty error UI, falling back to simple", e);
             root = createBasicErrorUi(e);
         }
         Scene scene = new Scene(root);
@@ -233,6 +233,7 @@ public class Bootstrap extends Application {
         bootstrapUiController.bindToTask(bootstrapTask);
         Thread thread = new Thread(bootstrapTask, "BootstrapTask");
         thread.setDaemon(true);
+        LOGGER.info("Launching bootstrap task");
         thread.start();
     }
 
@@ -248,8 +249,8 @@ public class Bootstrap extends Application {
         throwable.printStackTrace(printWriter);
         String formatted = String.format("Fatal exception in thread %s \"%s\": %s",
                 thread.getId(), thread.getName(), writer.toString());
-        System.err.println(formatted);
-        System.err.println("Application will now exit");
+        LOGGER.severe(formatted);
+        LOGGER.severe("Application will now exit");
         //  Check first if the JFX application started successfully
         if (startOk) {
             try {
@@ -262,7 +263,7 @@ public class Bootstrap extends Application {
                 e.printStackTrace(printWriter);
                 formatted = String.format("Fatal exception while handling exception: %s",
                         writer.toString());
-                System.err.println(formatted);
+                LOGGER.severe(formatted);
                 System.exit(-2);
                 return;
             }
