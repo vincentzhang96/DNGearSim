@@ -141,7 +141,8 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
 
 
         //  TODO
-        return null;
+        errorMessage = Optional.of("Handoff not yet implemented");
+        throw new Exception();
     }
 
     private boolean doesBootstrapRequireUpdate() throws Exception {
