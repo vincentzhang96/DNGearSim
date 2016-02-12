@@ -199,7 +199,7 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
             throw new Exception();
         }
         if (remote.isVersionHigherThan(local) || (remote.areVersionsEqual(local) && !remote.areHashesEqual(local))) {
-            performUpdate(remote);
+            performUpdaterUpdate(remote);
         } else {
             updateMessage(localeBundle.getString("bootstrap.splash.text.updater_ok"));
             TimeUnit.MILLISECONDS.sleep(500);
@@ -243,7 +243,7 @@ public class BootstrapTask extends Task<BootstrapHandoff> {
         return NOT_FOUND;
     }
 
-    private void performUpdate(VersionHashPair remote) {
+    private void performUpdaterUpdate(VersionHashPair remote) {
 
     }
 
