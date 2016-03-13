@@ -62,4 +62,12 @@
         </plugins>
     </build>
 
+    <dependencies>
+        <dependency>
+            <groupId>co.phoenixlab.dn.gearsim</groupId>
+            <artifactId>Bootstrap</artifactId>
+            <version>0.0.1.0</version>
+        </dependency>
+    </dependencies>
+
 </project>
